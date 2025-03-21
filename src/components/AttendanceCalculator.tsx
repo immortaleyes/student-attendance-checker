@@ -1,23 +1,16 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { 
-  AlertCircle, 
-  CheckCircle, 
-  Info, 
-  GraduationCap, 
-  BookOpen, 
-  UserCheck, 
-  Clock, 
-  CalendarCheck 
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+import { GraduationCap, CalendarCheck } from "lucide-react";
+
+// Import the refactored components
+import { InputFields } from "./attendance/InputFields";
+import { AttendanceStatusAlert } from "./attendance/AttendanceStatusAlert";
+import { CurrentAttendanceDisplay } from "./attendance/CurrentAttendanceDisplay";
+import { ClassesNeededInfo } from "./attendance/ClassesNeededInfo";
+import { AttendancePlanner } from "./attendance/AttendancePlanner";
+import { RemedialClassesInfo } from "./attendance/RemedialClassesInfo";
 
 export const AttendanceCalculator = () => {
   const [totalClasses, setTotalClasses] = useState<number>(0);
@@ -98,11 +91,10 @@ export const AttendanceCalculator = () => {
   };
   
   // Update projected attendance when planned attendance changes
-  useEffect(() => {
-    if (isCalculated) {
-      setProjectedAttendance(calculateProjectedAttendance());
-    }
-  }, [plannedAttendance]);
+  const handlePlannedAttendanceChange = (value: number) => {
+    setPlannedAttendance(value);
+    setProjectedAttendance(calculateProjectedAttendance());
+  };
   
   // Determine if student is at risk of debarment
   const isAtRisk = currentAttendance < 75;
@@ -124,59 +116,14 @@ export const AttendanceCalculator = () => {
       
       <CardContent className="space-y-6 pt-6">
         <div className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="totalClasses" className="flex items-center gap-1.5">
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                Total Classes Held
-              </Label>
-              <Input
-                id="totalClasses"
-                type="number"
-                min="0"
-                value={totalClasses || ''}
-                onChange={(e) => setTotalClasses(parseInt(e.target.value) || 0)}
-                placeholder="e.g., 40"
-                className="transition-all focus:ring-2 focus:ring-primary/20"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="attendedClasses" className="flex items-center gap-1.5">
-                <UserCheck className="h-4 w-4 text-muted-foreground" />
-                Classes Attended
-              </Label>
-              <Input
-                id="attendedClasses"
-                type="number"
-                min="0"
-                max={totalClasses}
-                value={attendedClasses || ''}
-                onChange={(e) => {
-                  const value = parseInt(e.target.value) || 0;
-                  setAttendedClasses(Math.min(value, totalClasses));
-                }}
-                placeholder="e.g., 30"
-                className="transition-all focus:ring-2 focus:ring-primary/20"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="remainingClasses" className="flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                Remaining Classes
-              </Label>
-              <Input
-                id="remainingClasses"
-                type="number"
-                min="0"
-                value={remainingClasses || ''}
-                onChange={(e) => setRemainingClasses(parseInt(e.target.value) || 0)}
-                placeholder="e.g., 10"
-                className="transition-all focus:ring-2 focus:ring-primary/20"
-              />
-            </div>
-          </div>
+          <InputFields 
+            totalClasses={totalClasses}
+            attendedClasses={attendedClasses}
+            remainingClasses={remainingClasses}
+            onTotalClassesChange={setTotalClasses}
+            onAttendedClassesChange={setAttendedClasses}
+            onRemainingClassesChange={setRemainingClasses}
+          />
           
           <Button
             onClick={handleCalculate}
@@ -192,174 +139,36 @@ export const AttendanceCalculator = () => {
         
         {isCalculated && (
           <div className="space-y-6 animate-fade-in">
-            <Alert
-              className={cn(
-                "border-2 shadow-sm",
-                isAtRisk ? "bg-danger/5 border-danger/20" : "bg-safe/5 border-safe/20"
-              )}
-            >
-              <div className="flex items-start gap-3">
-                {isAtRisk ? (
-                  <AlertCircle className="h-5 w-5 text-danger shrink-0 mt-0.5" />
-                ) : (
-                  <CheckCircle className="h-5 w-5 text-safe shrink-0 mt-0.5" />
-                )}
-                <div>
-                  <AlertTitle className="text-sm font-semibold">
-                    {isAtRisk ? "You're at risk of debarment" : "You're in good standing"}
-                  </AlertTitle>
-                  <AlertDescription className="text-sm text-muted-foreground mt-1">
-                    Current attendance: <span className="font-medium">{currentAttendance.toFixed(2)}%</span> 
-                    {isAtRisk && " (below 75% threshold)"}
-                  </AlertDescription>
-                </div>
-              </div>
-            </Alert>
+            <AttendanceStatusAlert 
+              isAtRisk={isAtRisk} 
+              currentAttendance={currentAttendance} 
+            />
             
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label>Current Attendance</Label>
-                <span className={cn(
-                  "text-sm font-medium px-2 py-0.5 rounded-full",
-                  currentAttendance >= 75 
-                    ? "bg-safe/10 text-safe" 
-                    : currentAttendance >= 65
-                      ? "bg-warning/10 text-warning" 
-                      : "bg-danger/10 text-danger"
-                )}>
-                  {currentAttendance.toFixed(2)}%
-                </span>
-              </div>
-              <Progress 
-                value={currentAttendance} 
-                max={100} 
-                className={cn(
-                  "h-3",
-                  currentAttendance >= 75 
-                    ? "bg-safe/20" 
-                    : currentAttendance >= 65
-                      ? "bg-warning/20" 
-                      : "bg-danger/20"
-                )}
-              />
-              <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                <span>0%</span>
-                <span className="px-1 py-0.5 rounded-sm bg-foreground/5 text-xs font-medium">
-                  Threshold: 75%
-                </span>
-                <span>100%</span>
-              </div>
-            </div>
+            <CurrentAttendanceDisplay currentAttendance={currentAttendance} />
             
             {isAtRisk && (
               <div className="space-y-6">
-                <div className="p-4 rounded-lg glass">
-                  <h3 className="font-medium mb-2 flex items-center gap-2 text-primary">
-                    <Info className="h-4 w-4" />
-                    Classes Needed
-                  </h3>
-                  
-                  {canAvoidDebarment ? (
-                    <p className="text-sm">
-                      You need to attend <strong className="text-primary font-semibold">{classesToAttend}</strong> out 
-                      of the <strong>{remainingClasses}</strong> remaining classes to avoid debarment.
-                    </p>
-                  ) : (
-                    <div>
-                      <p className="text-sm text-danger mb-2">
-                        Unfortunately, even if you attend all remaining {remainingClasses} classes, 
-                        you will not be able to reach the 75% attendance threshold.
-                      </p>
-                      <p className="text-sm">
-                        <strong>See the remedial classes section below for possible solutions.</strong>
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <ClassesNeededInfo 
+                  canAvoidDebarment={canAvoidDebarment}
+                  classesToAttend={classesToAttend}
+                  remainingClasses={remainingClasses}
+                />
                 
                 {canAvoidDebarment && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label className="mb-3 block">
-                        Plan to attend <span className="text-primary font-medium">{plannedAttendance}</span> out of {remainingClasses} remaining classes
-                      </Label>
-                      <Slider
-                        value={[plannedAttendance]}
-                        min={0}
-                        max={remainingClasses}
-                        step={1}
-                        onValueChange={(value) => setPlannedAttendance(value[0])}
-                        className="py-2"
-                      />
-                      <div className="flex justify-between mt-2">
-                        <span className="text-xs text-muted-foreground">0 Classes</span>
-                        <span className="text-xs text-muted-foreground">All {remainingClasses} Classes</span>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label>Projected Attendance</Label>
-                        <span className={cn(
-                          "text-sm font-medium px-2 py-0.5 rounded-full",
-                          projectedAttendance >= 75 
-                            ? "bg-safe/10 text-safe" 
-                            : "bg-danger/10 text-danger"
-                        )}>
-                          {projectedAttendance.toFixed(2)}%
-                        </span>
-                      </div>
-                      <Progress 
-                        value={projectedAttendance} 
-                        max={100} 
-                        className={projectedAttendance >= 75 ? "bg-safe/20 h-3" : "bg-danger/20 h-3"}
-                      />
-                      
-                      <div className="mt-2 text-sm">
-                        {projectedAttendance >= 75 ? (
-                          <p className="text-safe flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4" />
-                            You will meet the attendance requirement
-                          </p>
-                        ) : (
-                          <p className="text-danger flex items-center gap-2">
-                            <AlertCircle className="h-4 w-4" />
-                            You will still be debarred
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <AttendancePlanner 
+                    remainingClasses={remainingClasses}
+                    initialPlannedAttendance={plannedAttendance}
+                    projectedAttendance={projectedAttendance}
+                    onPlannedAttendanceChange={handlePlannedAttendanceChange}
+                  />
                 )}
                 
                 {/* Remedial Classes Section */}
                 {!canAvoidDebarment && remedialClasses > 0 && (
-                  <div className="mt-6 p-5 border-2 border-info/20 rounded-lg bg-info/5 space-y-4">
-                    <h3 className="font-medium flex items-center gap-2 text-info">
-                      <BookOpen className="h-4 w-4" />
-                      Remedial Classes Option
-                    </h3>
-                    
-                    <Alert>
-                      <AlertCircle className="h-4 w-4" />
-                      <AlertTitle>You need remedial classes</AlertTitle>
-                      <AlertDescription>
-                        Regular attendance alone won't be enough to avoid debarment.
-                      </AlertDescription>
-                    </Alert>
-                    
-                    <div className="bg-background p-4 rounded-md border">
-                      <p className="text-sm mb-3">
-                        You will need to attend <strong className="text-info font-semibold">{remedialClasses} remedial classes</strong> in 
-                        addition to all your remaining {remainingClasses} regular classes to reach the 75% threshold.
-                      </p>
-                      
-                      <div className="flex items-center gap-2 text-sm mt-4 text-muted-foreground">
-                        <Info className="h-4 w-4" />
-                        <p>Consult with your department about remedial class options.</p>
-                      </div>
-                    </div>
-                  </div>
+                  <RemedialClassesInfo 
+                    remedialClasses={remedialClasses}
+                    remainingClasses={remainingClasses}
+                  />
                 )}
               </div>
             )}
