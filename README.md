@@ -91,7 +91,7 @@ Your app will run at `http://localhost:5173` by default.
 
 **Ajay Shriram Kushwaha**  
 ✉️ [Kushwaha.ajay22@gmail.com](mailto:Kushwaha.ajay22@gmail.com)  
-© 2024 Ajay Shriram Kushwaha — All rights reserved.
+© 2025 Ajay Shriram Kushwaha — All rights reserved.
 
 ---
 
