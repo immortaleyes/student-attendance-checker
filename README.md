@@ -1,69 +1,120 @@
-# Welcome to your Lovable project
+# Student Attendance Checker
 
-## Project info
+A smart attendance monitoring and early intervention system that helps institutions, teachers, and students track attendance, predict academic risk (like debarment), and take timely corrective action.
 
-**URL**: https://lovable.dev/projects/c652e816-e64e-4d1c-b230-8a24f069a128
+---
 
-## How can I edit this code?
+## Overview
 
-There are several ways of editing your application.
+Attendance isn't just a routine formality—it's often linked to a student's academic performance and eligibility for examinations. Falling below a certain attendance threshold (commonly 75%) can result in **debarment**, meaning the student is disqualified from appearing in exams or continuing a course.
 
-**Use Lovable**
+This project aims to solve that problem by providing a responsive web-based system that allows:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c652e816-e64e-4d1c-b230-8a24f069a128) and start prompting.
+- **Tracking real-time attendance**
+- **Predicting debarment risk using current trends**
+- **Alerting students in advance**
+- **Suggesting proactive corrective actions**
 
-Changes made via Lovable will be committed automatically to this repo.
+Built with **React**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**, the platform offers a clean, modern, and extensible interface suitable for educational institutions of any size.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Why This Project Matters
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Many students are unaware of their attendance status until it's too late. By the time they realize they're at risk of being debarred, corrective actions are either difficult or impossible. This application changes that by:
 
-Follow these steps:
+- **Visualizing attendance trends** clearly and regularly
+- **Predicting future eligibility risks**
+- **Helping students stay on track**
+- **Reducing manual tracking efforts** for faculty and administrators
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+It empowers users with actionable insights—making attendance a tool for success rather than a cause for punishment.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Key Features
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- Add and update student records and attendance entries
+- Real-time visualization of attendance status
+- Status alerts:
+  - **Safe** (Above 75%)
+  - **Warning** (Between 60–75%)
+  - **Critical** (Below 60%)
+- Projected attendance trend analysis
+- Suggestion of corrective actions
+- Clean, mobile-friendly design
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Predictive Debarment Logic
 
-**Use GitHub Codespaces**
+The system evaluates the number of classes attended vs. total classes and provides predictions such as:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **SAFE**: You are on track to meet attendance requirements
+- **WARNING**: At risk of falling below threshold soon
+- **CRITICAL**: Debarment likely if attendance doesn't improve
 
-## What technologies are used for this project?
+It also calculates how many consecutive classes a student must attend to get back to a safe status.
 
-This project is built with .
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Suggested Corrective Actions
 
-## How can I deploy this project?
+- Prioritize attending all future classes
+- Attend optional/remedial or makeup sessions
+- Submit valid medical or academic leave documentation
+- Consult with faculty or academic counselors
+- Join attendance recovery initiatives if available
 
-Simply open [Lovable](https://lovable.dev/projects/c652e816-e64e-4d1c-b230-8a24f069a128) and click on Share -> Publish.
+---
 
-## I want to use a custom domain - is that possible?
+## Getting Started
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+### Prerequisites
+
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
+
+### Installation Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/immortaleyes/student-attendance-checker.git
+   ```
+
+2. Navigate to the project folder:
+   ```bash
+   cd student-attendance-checker
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## Tech Stack
+
+- **Frontend**: React, TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Build Tool**: Vite
+- **Version Control**: GitHub
+
+---
+
+## Author
+
+**Ajay Shriram Kushwaha**  
+**Email**: [Kushwaha.ajay22@gmail.com](mailto:Kushwaha.ajay22@gmail.com)  
+**Copyright** © Ajay Shriram Kushwaha
+
+---
+
+Empowering students with insights. Enabling teachers with tools. Enhancing education with smart data.
