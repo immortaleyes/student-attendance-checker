@@ -4,18 +4,22 @@ import { AttendanceCalculator } from "@/components/AttendanceCalculator";
 
 const Index = () => {
   return (
-    <div className="container max-w-4xl px-4 py-12 mx-auto min-h-screen flex flex-col">
-      <Header 
-        title="Student Attendance Calculator" 
-        subtitle="Check your current attendance status and find out if you're at risk of being debarred from examinations."
-      />
-      
-      <div className="mt-8 flex-grow">
-        <AttendanceCalculator />
+    <div className="min-h-screen flex flex-col bg-background">
+      <div className="container max-w-6xl px-4 py-8 mx-auto flex flex-col flex-grow">
+        <Header 
+          title="Student Attendance Calculator" 
+          subtitle="Check your current attendance status and find out if you're at risk of being debarred from examinations."
+        />
+        
+        <div className="mt-8 flex-grow">
+          <AttendanceCalculator />
+        </div>
       </div>
       
-      <footer className="mt-12 text-center text-sm text-muted-foreground pb-4">
-        <p>© {new Date().getFullYear()} - Designed & Developed by Ajay Shriram Kushwaha</p>
+      <footer className="py-6 bg-primary/5 border-t border-primary/10 text-center">
+        <p className="text-muted-foreground font-medium">
+          © {new Date().getFullYear()} - Designed & Developed by Ajay Shriram Kushwaha
+        </p>
       </footer>
     </div>
   );

@@ -6,9 +6,10 @@ import { AlertCircle, CheckCircle } from "lucide-react";
 interface AttendanceStatusAlertProps {
   isAtRisk: boolean;
   currentAttendance: number;
+  threshold: number;
 }
 
-export const AttendanceStatusAlert = ({ isAtRisk, currentAttendance }: AttendanceStatusAlertProps) => {
+export const AttendanceStatusAlert = ({ isAtRisk, currentAttendance, threshold }: AttendanceStatusAlertProps) => {
   return (
     <Alert
       className={cn(
@@ -23,12 +24,12 @@ export const AttendanceStatusAlert = ({ isAtRisk, currentAttendance }: Attendanc
           <CheckCircle className="h-5 w-5 text-safe shrink-0 mt-0.5" />
         )}
         <div>
-          <AlertTitle className="text-sm font-semibold">
+          <AlertTitle className="text-lg font-semibold">
             {isAtRisk ? "You're at risk of debarment" : "You're in good standing"}
           </AlertTitle>
-          <AlertDescription className="text-sm text-muted-foreground mt-1">
+          <AlertDescription className="text-md text-muted-foreground mt-1">
             Current attendance: <span className="font-medium">{currentAttendance.toFixed(2)}%</span> 
-            {isAtRisk && " (below 75% threshold)"}
+            {isAtRisk && ` (below ${threshold}% threshold)`}
           </AlertDescription>
         </div>
       </div>

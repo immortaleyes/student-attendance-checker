@@ -21,10 +21,10 @@ export const InputFields = ({
   onRemainingClassesChange
 }: InputFieldsProps) => {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 p-4 border-2 border-primary/10 rounded-lg bg-background">
       <div className="space-y-2">
-        <Label htmlFor="totalClasses" className="flex items-center gap-1.5">
-          <BookOpen className="h-4 w-4 text-muted-foreground" />
+        <Label htmlFor="totalClasses" className="flex items-center gap-2 text-lg">
+          <BookOpen className="h-5 w-5 text-primary" />
           Total Classes Held
         </Label>
         <Input
@@ -34,13 +34,13 @@ export const InputFields = ({
           value={totalClasses || ''}
           onChange={(e) => onTotalClassesChange(parseInt(e.target.value) || 0)}
           placeholder="e.g., 40"
-          className="transition-all focus:ring-2 focus:ring-primary/20"
+          className="transition-all focus:ring-2 focus:ring-primary/20 text-lg py-6 font-medium"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="attendedClasses" className="flex items-center gap-1.5">
-          <UserCheck className="h-4 w-4 text-muted-foreground" />
+        <Label htmlFor="attendedClasses" className="flex items-center gap-2 text-lg">
+          <UserCheck className="h-5 w-5 text-primary" />
           Classes Attended
         </Label>
         <Input
@@ -54,13 +54,13 @@ export const InputFields = ({
             onAttendedClassesChange(Math.min(value, totalClasses));
           }}
           placeholder="e.g., 30"
-          className="transition-all focus:ring-2 focus:ring-primary/20"
+          className="transition-all focus:ring-2 focus:ring-primary/20 text-lg py-6 font-medium"
         />
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="remainingClasses" className="flex items-center gap-1.5">
-          <Clock className="h-4 w-4 text-muted-foreground" />
+        <Label htmlFor="remainingClasses" className="flex items-center gap-2 text-lg">
+          <Clock className="h-5 w-5 text-primary" />
           Remaining Classes
         </Label>
         <Input
@@ -70,7 +70,7 @@ export const InputFields = ({
           value={remainingClasses || ''}
           onChange={(e) => onRemainingClassesChange(parseInt(e.target.value) || 0)}
           placeholder="e.g., 10"
-          className="transition-all focus:ring-2 focus:ring-primary/20"
+          className="transition-all focus:ring-2 focus:ring-primary/20 text-lg py-6 font-medium"
         />
       </div>
     </div>
